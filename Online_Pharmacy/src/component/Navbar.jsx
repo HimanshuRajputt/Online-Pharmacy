@@ -30,41 +30,31 @@ const Navbar = () => {
     <Box bg="blue.600" px={6} py={4} color="white">
       <Flex align="center">
         <Heading as="h1" size="lg" letterSpacing="wide">
-          <Link to="/">PharmaCart</Link>
+          <Link to="/">Online Pharmacy</Link>
         </Heading>
 
         <Spacer />
 
         {/* Desktop Menu */}
         <Flex display={{ base: "none", md: "flex" }} gap={6}>
-          <Button as={Link} to="/" colorScheme="whiteAlpha" variant="ghost">
+          <Button as={Link} to="/" colorScheme="white" variant="ghost">
             Home
           </Button>
-          <Button
-            as={Link}
-            to="/login"
-            colorScheme="whiteAlpha"
-            variant="ghost"
-          >
+          <Button as={Link} to="/login" colorScheme="white" variant="ghost">
             Login
           </Button>
-          <Button
-            as={Link}
-            to="/dashboard"
-            colorScheme="whiteAlpha"
-            variant="ghost"
-          >
+          <Button as={Link} to="/dashboard" colorScheme="white" variant="ghost">
             Dashboard
           </Button>
           <Button
             as={Link}
             to="/cart"
-            colorScheme="whiteAlpha"
+            colorScheme="white"
             variant="ghost"
             leftIcon={<FiShoppingCart />}
           >
             Cart{" "}
-            <Badge ml={2} colorScheme="red">
+            <Badge rounded="xl" position="absolute" right="1" top="-1"  ml={2} colorScheme="red">
               {cartItems.length}
             </Badge>
           </Button>

@@ -315,11 +315,11 @@ const CategoryCard = ({ title, image, count }) => (
     transition="all 0.3s"
   >
     <Image
-      src={`/api/placeholder/150/150`}
+      src={image}
       alt={title}
-      w="100px"
+      w="90%"
       h="100px"
-      rounded="full"
+      // rounded="full"
       objectFit="cover"
     />
     <Heading size="sm" color={useColorModeValue("gray.700", "white")}>
@@ -330,14 +330,54 @@ const CategoryCard = ({ title, image, count }) => (
 );
 
 const categories = [
-  { title: "Prescription Drugs", count: "1000+" },
-  { title: "Healthcare Devices", count: "500+" },
-  { title: "Personal Care", count: "800+" },
-  { title: "Vitamins & Supplements", count: "600+" },
-  { title: "Baby Care", count: "400+" },
-  { title: "Wellness", count: "700+" },
-  { title: "Ayurvedic", count: "300+" },
-  { title: "COVID Essentials", count: "100+" },
+  {
+    title: "Prescription Drugs",
+    count: "1000+",
+    image:
+      "https://s3.amazonaws.com/thumbnails.illustrationsource.com/huge.16.83013.JPG",
+  },
+  {
+    title: "Healthcare Devices",
+    count: "500+",
+    image:
+      "https://cdni.iconscout.com/illustration/premium/thumb/healthcare-equipment-illustration-download-in-svg-png-gif-file-formats--medical-pattern-first-aid-kit-medicine-doctor-pharmacy-pregnancy-pack-people-illustrations-4494350.png",
+  },
+  {
+    title: "Personal Care",
+    count: "800+",
+    image:
+      "https://media.istockphoto.com/id/1291270019/vector/gift-set-of-organic-cosmetics-for-women-various-bottles-tubes-and-jars-for-skincare-female.jpg?s=612x612&w=0&k=20&c=sfZ2Ihgi7H7CsF2yWIAavHF_7I_c_A1I9j8qqakjvlM=",
+  },
+  {
+    title: "Vitamins & Supplements",
+    count: "600+",
+    image:
+      "https://thumbs.dreamstime.com/b/dietary-supplements-variety-pills-vitamin-capsules-d-34701589.jpg ",
+  },
+  {
+    title: "Baby Care",
+    count: "400+",
+    image:
+      " https://media.vyaparify.com/vcards/products/3691/Jain-medical-Baby-product-.jpg",
+  },
+  {
+    title: "Wellness",
+    count: "700+",
+    image:
+      " https://thumbs.dreamstime.com/b/beauty-wellness-products-isolated-simple-background-35499098.jpg",
+  },
+  {
+    title: "Ayurvedic",
+    count: "300+",
+    image:
+      "https://cdni.iconscout.com/illustration/premium/thumb/ayurvedic-beauty-product-illustration-download-in-svg-png-gif-file-formats--school-salon-cosmetic-applying-makeup-and-health-pack-illustrations-6679884.png ",
+  },
+  {
+    title: "COVID Essentials",
+    count: "100+",
+    image:
+      " https://img.freepik.com/free-vector/virus-equipment-protection-collection_23-2148505981.jpg",
+  },
 ];
 
 export default Home;
