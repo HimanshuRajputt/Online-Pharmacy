@@ -28,7 +28,7 @@ const Cart = () => {
   const total = subtotal + estimatedTax;
 
   return (
-    <Flex maxW="1100px" mx="auto" p={6} gap={8}>
+    <Flex h="100vh" mx="auto" p={6} gap={8}>
       {/* Left Side: Cart Items */}
       <Box flex="2" bg="white" p={6} borderRadius="lg" boxShadow="md">
         <Heading size="lg" mb={4}>
@@ -40,7 +40,7 @@ const Cart = () => {
             Your cart is empty.
           </Text>
         ) : (
-          <VStack spacing={6} align="stretch" maxH="500px" overflowY="auto">
+          <VStack spacing={6} align="stretch" maxH="80%" overflowY="auto">
             {cartItems.map((item) => (
               <Flex
                 key={item.id}
