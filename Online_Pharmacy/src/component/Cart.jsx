@@ -13,10 +13,27 @@ import {
 } from "@chakra-ui/react";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItems, removeFromCart, updateCartItem } = useCart();
+  // const [amount, setAmount] = useState("");
+  const navigate = useNavigate();
+  const { cartItems,setCartItems, removeFromCart, updateCartItem } = useCart();
   const toast = useToast();
+
+  useEffect(() => {
+    // Load Razorpay SDK dynamically
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(
@@ -26,6 +43,106 @@ const Cart = () => {
 
   const estimatedTax = subtotal * 0.05; // Assuming 5% tax
   const total = subtotal + estimatedTax;
+
+  const handleSubmit = (totalAmount) => {
+    // setAmount(totalAmount);
+
+    if (!window.Razorpay) {
+      toast({
+        title: "Error",
+        description:
+          "Razorpay SDK failed to load. Please check your internet connection.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (totalAmount === "") {
+      toast({
+        title: "Error",
+        description: "Please enter an amount",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    const userId = uuidv4();
+    const trackingId = uuidv4();
+    const status = "Processing";
+
+    var options = {
+      key: "rzp_test_mWVKJchEpzXZ2A",
+      key_secret: "OB7MEkYtsm9k53a2qQgEeA9L",
+      amount: totalAmount * 100,
+      currency: "INR",
+      name: "Online Pharmacy",
+      description: "For testing purpose",
+      handler: function (response) {
+        toast({
+          title: "Payment Successful!",
+          description: `Transaction ID: ${response.razorpay_payment_id}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        const transactionData = {
+          userId,
+          trackingId,
+          transactionId: response.razorpay_payment_id,
+          amount: totalAmount,
+          status,
+          timestamp: new Date().toISOString(),
+        };
+
+        axios
+          .post(
+            "https://userstatus-9db86-default-rtdb.firebaseio.com/status.json",
+            transactionData
+          )
+          .then(() => {
+            toast({
+              title: "Transaction Stored",
+              description: "Transaction details saved successfully",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+            });
+            //==============================================================HERE
+            setCartItems([])
+            navigate("/order-status");
+          })
+          .catch((error) => {
+            toast({
+              title: "Error",
+              description: "Failed to store transaction",
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
+            console.error("Error storing transaction: ", error);
+          });
+      },
+      prefill: {
+        name: "Aadithyan",
+        email: "adithyanas@gmail.com",
+        contact: "8848673615",
+      },
+      notes: {
+        address: "Ooruttambalam",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const pay = new window.Razorpay(options);
+    pay.open();
+  };
 
   return (
     <Flex h="100vh" mx="auto" p={6} gap={8}>
@@ -98,7 +215,7 @@ const Cart = () => {
                       title: "Item Removed",
                       description: `${item.name} has been removed from your cart.`,
                       status: "error",
-                      duration: 3000,
+                      duration: 900,
                       isClosable: true,
                     });
                   }}
@@ -130,7 +247,12 @@ const Cart = () => {
               ₹{total.toFixed(2)}
             </Text>
           </HStack>
-          <Button colorScheme="green" w="full" mt={4}>
+          <Button
+            onClick={() => handleSubmit(total.toFixed(2))}
+            colorScheme="green"
+            w="full"
+            mt={4}
+          >
             Proceed to Checkout
           </Button>
         </VStack>

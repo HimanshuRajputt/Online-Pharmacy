@@ -5,7 +5,7 @@ import {
   Box,
   Flex,
   Grid,
-  VStack,
+  // VStack,
   HStack,
   Text,
   Input,
@@ -15,22 +15,23 @@ import {
   Heading,
   Badge,
   Icon,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  FormControl,
-  FormLabel,
+  // Modal,
+  // ModalOverlay,
+  // ModalContent,
+  // ModalHeader,
+  // ModalFooter,
+  // ModalBody,
+  // ModalCloseButton,
+  // useDisclosure,
+  // FormControl,
+  // FormLabel,
   useToast,
   Spinner,
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { FaSearch, FaPlus, FaStar, FaShoppingCart } from "react-icons/fa";
+import { FaSearch, FaStar, FaShoppingCart } from "react-icons/fa";
+// import { FaSearch, FaPlus, FaStar, FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
 import { useCart } from "../context/CartContext"; // Import Cart Context
 
@@ -40,17 +41,17 @@ const PharmacyDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
   // New Medicine Form State
-  const [newMedicine, setNewMedicine] = useState({
-    name: "",
-    brand: "",
-    category: "",
-    price: "",
-    description: "",
-  });
+  // const [newMedicine, setNewMedicine] = useState({
+  //   name: "",
+  //   brand: "",
+  //   category: "",
+  //   price: "",
+  //   description: "",
+  // });
 
   // Fetch Medicines
   useEffect(() => {
@@ -101,6 +102,14 @@ const PharmacyDashboard = () => {
   const { addToCart } = useCart();
   // Add to cart
   function handleAddToCart(medicine) {
+     toast({
+       title: "Item Added",
+       description: "Item Add to Cart",
+       status: "success",
+       duration: 900,
+       isClosable: true,
+       position: "top-right", // Set position here
+     });
     addToCart({
       id: medicine.id,
       name: medicine.name,
@@ -111,53 +120,53 @@ const PharmacyDashboard = () => {
   }
 
   // Add Medicine Handler
-  const handleAddMedicine = async () => {
-    try {
-      // Add validation
-      if (!newMedicine.name || !newMedicine.brand || !newMedicine.category) {
-        toast({
-          title: "Validation Error",
-          description: "Please fill all required fields",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        return;
-      }
+  // const handleAddMedicine = async () => {
+  //   try {
+  //     // Add validation
+  //     if (!newMedicine.name || !newMedicine.brand || !newMedicine.category) {
+  //       toast({
+  //         title: "Validation Error",
+  //         description: "Please fill all required fields",
+  //         status: "error",
+  //         duration: 3000,
+  //         isClosable: true,
+  //       });
+  //       return;
+  //     }
 
-      // Add to Firebase (you'd need to implement proper backend logic)
-      await axios.post(
-        "https://onlinepharmacy-cb0e3-default-rtdb.firebaseio.com/Medicine.json",
-        newMedicine
-      );
+  //     // Add to Firebase (you'd need to implement proper backend logic)
+  //     await axios.post(
+  //       "https://onlinepharmacy-cb0e3-default-rtdb.firebaseio.com/Medicine.json",
+  //       newMedicine
+  //     );
 
-      toast({
-        title: "Medicine Added",
-        description: "New medicine added successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+  //     toast({
+  //       title: "Medicine Added",
+  //       description: "New medicine added successfully",
+  //       status: "success",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
 
-      // Reset form and close modal
-      setNewMedicine({
-        name: "",
-        brand: "",
-        category: "",
-        price: "",
-        description: "",
-      });
-      onClose();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: `Could not add medicine ${error}`,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+  //     // Reset form and close modal
+  //     setNewMedicine({
+  //       name: "",
+  //       brand: "",
+  //       category: "",
+  //       price: "",
+  //       description: "",
+  //     });
+  //     // onClose();
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: `Could not add medicine ${error}`,
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
 
   // Medicine Card Component
   const MedicineCard = ({ medicine }) => (
@@ -264,9 +273,9 @@ const PharmacyDashboard = () => {
             ))}
           </Select>
 
-          <Button colorScheme="green" leftIcon={<FaPlus />} onClick={onOpen}>
+          {/* <Button colorScheme="green" leftIcon={<FaPlus />} onClick={onOpen}>
             Add Medicine
-          </Button>
+          </Button> */}
         </HStack>
       </Flex>
 
@@ -290,7 +299,7 @@ const PharmacyDashboard = () => {
       )}
 
       {/* Add Medicine Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size="md">
+      {/* <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add New Medicine</ModalHeader>
@@ -375,7 +384,8 @@ const PharmacyDashboard = () => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
+      
     </Box>
   );
 };

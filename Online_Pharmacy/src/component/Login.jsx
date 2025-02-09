@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   FormControl,
@@ -18,6 +18,7 @@ import {
 import { useNavigate, Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 import axios from "axios";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,6 +27,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
+  const { handleUserLogin } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,9 +42,13 @@ const Login = () => {
       toast({
         title: "Login Successful",
         status: "success",
-        duration: 3000,
+        duration: 2000,
         isClosable: true,
       });
+
+      // handle login logout using local storage
+      // localStorage.setItem("Login", "true");
+      handleUserLogin();
       navigate("/dashboard");
     } catch (error) {
       toast({

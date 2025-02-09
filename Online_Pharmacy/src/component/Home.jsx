@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -37,10 +37,14 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Tesseract from "tesseract.js";
+import Footer from "./Footer";
+import { UserContext } from "../context/UserContext";
+import UUpload from "./UUpload";
 
 const MotionBox = motion(Box);
 
 const Home = () => {
+  const { handleUserLogin, userlogin } = useContext(UserContext);
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [extractedText, setExtractedText] = useState("");
@@ -84,7 +88,9 @@ const Home = () => {
         console.error(error);
       });
   };
-
+  function handleBrowser() {
+    userlogin ? navigate("/dashboard") : navigate("/Login");
+  }
   return (
     <Box>
       {/* Hero Section */}
@@ -127,7 +133,7 @@ const Home = () => {
               </Text>
               <Stack direction={{ base: "column", sm: "row" }} spacing={4}>
                 <Button
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => handleBrowser()}
                   size="lg"
                   colorScheme="teal"
                   rightIcon={<FaSearch />}
@@ -217,7 +223,7 @@ const Home = () => {
       </Box>
 
       {/* CTA Section */}
-      <Box py={20} bg={useColorModeValue("white", "gray.800")}>
+      {/* <Box py={20} bg={useColorModeValue("white", "gray.800")}>
         <Container maxW="container.xl">
           <Flex
             direction={{ base: "column", md: "row" }}
@@ -245,22 +251,23 @@ const Home = () => {
             </Button>
           </Flex>
         </Container>
-      </Box>
+      </Box> */}
 
       {/* Upload Prescription Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Upload Prescription Image</ModalHeader>
+          {/* <ModalHeader>Upload Prescription Image</ModalHeader> */}
           <ModalCloseButton />
           <ModalBody>
-            <Input
+            {/* <Input
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
               mb={4}
-            />
-            {file && (
+            /> */}
+            <UUpload />
+            {/* {file && (
               <Box>
                 <Text fontSize="lg" mb={4}>
                   Extracted Text:
@@ -270,16 +277,18 @@ const Home = () => {
                   borderColor="gray.300"
                   p={4}
                   rounded="md"
-                  minH="200px"
+                  minH="100px"
                   overflowY="auto"
                 >
                   <pre>{extractedText}</pre>
                 </Box>
               </Box>
-            )}
+            )} */}
           </ModalBody>
         </ModalContent>
       </Modal>
+
+      <Footer />
     </Box>
   );
 };
