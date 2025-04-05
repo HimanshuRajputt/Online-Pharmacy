@@ -50,6 +50,7 @@ const Home = () => {
   const [extractedText, setExtractedText] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const token = localStorage.getItem("authToken")
   const bgGradient = useColorModeValue(
     "linear(to-r, blue.50, white, green.50)",
     "linear(to-r, blue.900, gray.800, green.900)"
@@ -141,7 +142,7 @@ const Home = () => {
                   Browse Medicines
                 </Button>
                 <Button
-                  onClick={onOpen}
+                  onClick={() => (userlogin ? onOpen() : navigate("/login"))}
                   size="lg"
                   variant="outline"
                   colorScheme="blue"
@@ -222,36 +223,7 @@ const Home = () => {
         </Container>
       </Box>
 
-      {/* CTA Section */}
-      {/* <Box py={20} bg={useColorModeValue("white", "gray.800")}>
-        <Container maxW="container.xl">
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            align="center"
-            justify="space-between"
-            bg="teal.500"
-            p={10}
-            rounded="2xl"
-            color="white"
-          >
-            <VStack align="flex-start" spacing={4}>
-              <Heading size="lg">Download Our Mobile App</Heading>
-              <Text fontSize="lg">
-                Get exclusive offers and manage your prescriptions on the go
-              </Text>
-            </VStack>
-            <Button
-              size="lg"
-              colorScheme="white"
-              variant="outline"
-              mt={{ base: 6, md: 0 }}
-              _hover={{ bg: "whiteAlpha.200" }}
-            >
-              Get the App
-            </Button>
-          </Flex>
-        </Container>
-      </Box> */}
+     
 
       {/* Upload Prescription Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>

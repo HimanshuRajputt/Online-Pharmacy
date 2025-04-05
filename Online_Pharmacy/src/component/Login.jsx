@@ -19,6 +19,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import { useCart } from "../context/CartContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ const Login = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const { handleUserLogin } = useContext(UserContext);
+  const { fetchCart } = useCart();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,9 +37,11 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://mealplanner-backend-8v3d.onrender.com/api/login",
+        "https://online-pharmacy-backend.onrender.com/auth/login",
         { email, password }
       );
+      // console.log(response.data.user.role)
+      localStorage.setItem("role", response.data.user.role);
       localStorage.setItem("authToken", response.data.token);
       toast({
         title: "Login Successful",
@@ -49,6 +53,7 @@ const Login = () => {
       // handle login logout using local storage
       // localStorage.setItem("Login", "true");
       handleUserLogin();
+      fetchCart();
       navigate("/dashboard");
     } catch (error) {
       toast({

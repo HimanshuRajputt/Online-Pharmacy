@@ -48,7 +48,7 @@ const SignUp = () => {
 
     try {
       await axios.post(
-        "https://mealplanner-backend-8v3d.onrender.com/api/register",
+        "https://online-pharmacy-backend.onrender.com/auth/register",
         {
           name,
           email,

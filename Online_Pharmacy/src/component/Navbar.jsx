@@ -14,7 +14,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   VStack,
-  useDisclosure,
+  // useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FiShoppingCart } from "react-icons/fi";
@@ -23,10 +23,18 @@ import { UserContext } from "../context/UserContext";
 
 const Navbar = () => {
   const { cartItems } = useCart();
-  // eslint-disable-next-line no-unused-vars
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { handleUserLogin, userlogin } = useContext(UserContext);
+  const { handleUserLogOut } = useContext(UserContext);
+
+  // This ensures the navbar reacts to authentication changes
+  const isLoggedIn = !!localStorage.getItem("authToken");
+  const role= localStorage.getItem("role")
+  // console.log(role)
+  // Close mobile menu when changing routes
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <Box bg="blue.600" px={6} py={4} color="white">
@@ -42,16 +50,24 @@ const Navbar = () => {
           <Button as={Link} to="/" colorScheme="white" variant="ghost">
             Home
           </Button>
-          {userlogin ? (
-            ""
-          ) : (
-            <>
-              <Button as={Link} to="/login" colorScheme="white" variant="ghost">
-                Login
-              </Button>
-            </>
+          {!isLoggedIn && (
+            <Button as={Link} to="/login" colorScheme="white" variant="ghost">
+              Login
+            </Button>
           )}
-          {userlogin ? (
+          {isLoggedIn && role === "admin" ? (
+            <Button
+              as={Link}
+              to="/AdminDashboard"
+              colorScheme="white"
+              variant="ghost"
+            >
+              AdminPanel
+            </Button>
+          ) : (
+            ""
+          )}
+          {isLoggedIn && (
             <>
               <Button
                 as={Link}
@@ -59,7 +75,7 @@ const Navbar = () => {
                 colorScheme="white"
                 variant="ghost"
               >
-                Dashboard
+                Medicines
               </Button>
 
               <Button
@@ -77,9 +93,10 @@ const Navbar = () => {
                 colorScheme="white"
                 variant="ghost"
                 leftIcon={<FiShoppingCart />}
+                position="relative"
               >
                 Cart{" "}
-                {cartItems.length > 0 ? (
+                {cartItems.length > 0 && (
                   <Badge
                     rounded="xl"
                     position="absolute"
@@ -90,12 +107,10 @@ const Navbar = () => {
                   >
                     {cartItems.length}
                   </Badge>
-                ) : (
-                  ""
                 )}
               </Button>
               <Button
-                onClick={() => handleUserLogin()}
+                onClick={handleUserLogOut}
                 as={Link}
                 to="/"
                 colorScheme="white"
@@ -104,8 +119,6 @@ const Navbar = () => {
                 Logout
               </Button>
             </>
-          ) : (
-            ""
           )}
         </Flex>
 
@@ -115,73 +128,78 @@ const Navbar = () => {
           icon={isMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
           variant="ghost"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle Menu"
         />
       </Flex>
 
       {/* Mobile Drawer Menu */}
-      <Drawer placement="right" onClose={onClose} isOpen={isMenuOpen}>
+      <Drawer
+        placement="right"
+        onClose={() => setIsMenuOpen(false)}
+        isOpen={isMenuOpen}
+      >
         <DrawerOverlay />
         <DrawerContent
-          h={userlogin ? "35%" : "20%"}
-          borderRadius="xl"
+          // w="50%"
+          maxW="200px"
+          h={isLoggedIn ? "52%" : "28%"}
+          borderRadius="2xl"
           bg="blue.600"
         >
           <DrawerCloseButton onClick={() => setIsMenuOpen(false)} />
           <DrawerBody>
-            <VStack spacing={4} mt={10}>
+            <VStack spacing={4} mt={8}>
               <Button
                 as={Link}
                 p="9%"
                 to="/"
                 colorScheme="whiteAlpha"
-                onClick={onClose}
+                onClick={handleMenuItemClick}
               >
                 Home
               </Button>
-              {userlogin ? (
-                ""
-              ) : (
-                <>
-                  <Button
-                    as={Link}
-                    to="/login"
-                    p="9%"
-                    colorScheme="whiteAlpha"
-                    onClick={onClose}
-                  >
-                    Login
-                  </Button>
-                </>
+              {!isLoggedIn && (
+                <Button
+                  as={Link}
+                  to="/login"
+                  p="9%"
+                  colorScheme="whiteAlpha"
+                  onClick={handleMenuItemClick}
+                >
+                  Login
+                </Button>
               )}
-              {userlogin ? (
+              {isLoggedIn && (
                 <>
                   <Button
                     as={Link}
                     to="/dashboard"
                     p="3%"
                     colorScheme="whiteAlpha"
-                    onClick={onClose}
+                    onClick={handleMenuItemClick}
                   >
-                    Dashboard
+                    Medicines
                   </Button>
                   <Button
-                    p="8%"
+                    p="9%"
                     as={Link}
                     to="/order-status"
                     colorScheme="whiteAlpha"
+                    onClick={handleMenuItemClick}
                   >
                     Orders
                   </Button>
                   <Button
-                    p="8%"
+                    p="9%"
                     as={Link}
                     to="/cart"
                     colorScheme="whiteAlpha"
                     leftIcon={<FiShoppingCart />}
-                    onClick={onClose}
+                    onClick={handleMenuItemClick}
+                    position="relative"
                   >
                     Cart{" "}
-                    {cartItems.length > 0 ? (
+                    {cartItems.length > 0 && (
                       <Badge
                         rounded="xl"
                         position="absolute"
@@ -192,12 +210,13 @@ const Navbar = () => {
                       >
                         {cartItems.length}
                       </Badge>
-                    ) : (
-                      ""
                     )}
                   </Button>
                   <Button
-                    onClick={() => handleUserLogin()}
+                    onClick={() => {
+                      handleUserLogOut();
+                      handleMenuItemClick();
+                    }}
                     as={Link}
                     to="/"
                     p="9%"
@@ -207,8 +226,6 @@ const Navbar = () => {
                     Logout
                   </Button>
                 </>
-              ) : (
-                ""
               )}
             </VStack>
           </DrawerBody>

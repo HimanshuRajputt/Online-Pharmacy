@@ -34,6 +34,7 @@ import { FaSearch, FaStar, FaShoppingCart } from "react-icons/fa";
 // import { FaSearch, FaPlus, FaStar, FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
 import { useCart } from "../context/CartContext"; // Import Cart Context
+import { AI_Bot } from "./AI_Bot";
 
 const PharmacyDashboard = () => {
   const [medicines, setMedicines] = useState([]);
@@ -58,9 +59,11 @@ const PharmacyDashboard = () => {
     const fetchMedicines = async () => {
       try {
         const response = await axios.get(
-          "https://onlinepharmacy-cb0e3-default-rtdb.firebaseio.com/Medicine.json"
+          "https://online-pharmacy-backend.onrender.com/products/"
+          // "https://onlinepharmacy-cb0e3-default-rtdb.firebaseio.com/Medicine.json"
         );
-        const medicineData = response.data ? Object.values(response.data) : [];
+        const medicineData = response.data ;
+        // const medicineData = response.data ? Object.values(response.data) : [];
         setMedicines(medicineData);
         setFilteredMedicines(medicineData);
         setIsLoading(false);
@@ -99,7 +102,7 @@ const PharmacyDashboard = () => {
 
   // Get Unique Categories
   const categories = [...new Set(medicines.map((med) => med.category))];
-  const { addToCart } = useCart();
+  const {addToCart } = useCart();
   // Add to cart
   function handleAddToCart(medicine) {
      toast({
@@ -111,7 +114,7 @@ const PharmacyDashboard = () => {
        position: "top-right", // Set position here
      });
     addToCart({
-      id: medicine.id,
+      _id: medicine._id,
       name: medicine.name,
       price: medicine.price,
       quantity: 1,
@@ -220,13 +223,16 @@ const PharmacyDashboard = () => {
           </HStack>
         </HStack>
         <Button
-          onClick={()=> handleAddToCart(medicine)}
+          onClick={()=>    
+            {console.log(medicine), handleAddToCart(medicine)}}
+          
           mt={4}
           w="full"
           colorScheme="blue"
           leftIcon={<FaShoppingCart />}
         >
           Add to Cart
+          {/* {console.log(medicine)} */}
         </Button>
       </Box>
     </Box>
@@ -287,13 +293,13 @@ const PharmacyDashboard = () => {
         <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-            lg: "repeat(4, 1fr)",
+            md: "repeat(3, 1fr)",
+            lg: "repeat(5, 1fr)",
           }}
           gap={6}
         >
           {filteredMedicines.map((medicine) => (
-            <MedicineCard key={medicine.id} medicine={medicine} />
+            <MedicineCard key={medicine._id} medicine={medicine} />
           ))}
         </Grid>
       )}
@@ -385,7 +391,7 @@ const PharmacyDashboard = () => {
           </ModalFooter>
         </ModalContent>
       </Modal> */}
-      
+      <AI_Bot/>
     </Box>
   );
 };
