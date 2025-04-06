@@ -148,7 +148,7 @@ Authentication is implemented using JWT (JSON Web Tokens):
 ## 🌐 Deployment
 
 The frontend application is deployed on Netlify:
-- Live URL: `[Online Pharmacy Backend](https://symphonious-paletas-1640f0.netlify.app/)`
+- Live URL: [Online Pharmacy](https://symphonious-paletas-1640f0.netlify.app/)
 
 
 ## 📄 License
