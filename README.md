@@ -127,7 +127,7 @@ VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
 | `/checkout` | `CheckoutPage.jsx` | Checkout process |
 | `/order-status` | `OrderStatus.jsx` | Order tracking |
 | `/admin` | `AdminDashboard.jsx` | Admin panel (admin only) |
-| `/upload` | `UUpload.jsx` | Product upload (admin only) |
+| `/upload` | `UUpload.jsx` | Product Priscription |
 
 ## 🔄 Context API
 
