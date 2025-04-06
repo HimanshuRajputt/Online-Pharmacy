@@ -167,4 +167,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🔗 Related Projects
 
-- [Online Pharmacy Backend](https://github.com/HimanshuRajputt/Online-Pharmacy) - Backend API for this application
+- [Online Pharmacy Backend](https://onlin-pharmacy-backend.onrender.com) - Backend API for this application
